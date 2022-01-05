@@ -95,7 +95,7 @@ function BottomTab() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={Screens.CART}
         component={Cart}
         options={{
@@ -108,7 +108,7 @@ function BottomTab() {
           ),
           tabBarButton: props => <CustomBarButton {...props} />,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="add3"
         component={AddCharacter}
@@ -151,7 +151,7 @@ function Navigation() {
         <Stack.Screen name={Screens.SIGNUP} component={SignUp} />
         <Stack.Screen name={Screens.BOTTOMTAB} component={BottomTab} />
         <Stack.Screen name={Screens.DETAIL} component={Detailcharacter} />
-        {/* <Stack.Screen name={Screens.CART} component={Cart} /> */}
+        <Stack.Screen name={Screens.CART} component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>
   );

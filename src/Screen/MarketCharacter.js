@@ -13,6 +13,7 @@ import {
   Touchable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Block} from '../Components';
 import Images from '../Theme/Images';
 import {Screens} from '../Utils/Screens';
@@ -78,45 +79,47 @@ const items = [
   },
 ];
 
+const ListCategories = ({selectedCategoryIndex, setSelectedCategoryIndex}) => {
+  return (
+    <FlatList
+      data={categories}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={style.categoriesListContainer}
+      scrollEnabled
+      bounces={false}
+      // initialScrollIndex={
+      //   selectedCategoryIndex - 1 > 0 ? selectedCategoryIndex - 1 : 0
+      // }
+      keyExtractor={(item, index) => `${index}`}
+      renderItem={({item, index}) => (
+        <TouchableOpacity
+          key={index}
+          activeOpacity={0.8}
+          onPress={() => setSelectedCategoryIndex(index)}>
+          <View
+            style={{
+              backgroundColor:
+                selectedCategoryIndex == index ? '#F9813A' : '#fedac5',
+              ...style.categoryBtn,
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                color: selectedCategoryIndex == index ? 'white' : '#F9813A',
+              }}>
+              {item.name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
+    />
+  );
+};
+
 function MarketCharacter({navigation}) {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
-  const ListCategories = () => {
-    return (
-      <FlatList
-        data={categories}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={style.categoriesListContainer}
-        scrollEnabled
-        initialScrollIndex={
-          selectedCategoryIndex - 1 > 0 ? selectedCategoryIndex - 1 : 0
-        }
-        keyExtractor={(item, index) => `${index}`}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => setSelectedCategoryIndex(index)}>
-            <View
-              style={{
-                backgroundColor:
-                  selectedCategoryIndex == index ? '#F9813A' : '#fedac5',
-                ...style.categoryBtn,
-              }}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: 'bold',
-                  color: selectedCategoryIndex == index ? 'white' : '#F9813A',
-                }}>
-                {item.name}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
-    );
-  };
 
   const Card = ({item}) => {
     return (
@@ -197,7 +200,10 @@ function MarketCharacter({navigation}) {
           </View>
         </View>
         <View>
-          <ListCategories />
+          <ListCategories
+            selectedCategoryIndex={selectedCategoryIndex}
+            setSelectedCategoryIndex={setSelectedCategoryIndex}
+          />
         </View>
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -205,6 +211,35 @@ function MarketCharacter({navigation}) {
           data={items}
           renderItem={({item}) => <Card item={item} />}
         />
+        <Block flex={false} style={style.cart}>
+          <TouchableOpacity
+            style={{
+              top: -30,
+              justifyContent: 'center',
+              alignItems: 'center',
+              ...style.shadow,
+            }}
+            onPress={() => {
+              navigation.navigate(Screens.CART);
+            }}>
+            <Block
+              flex={false}
+              style={{
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                backgroundColor: '#add8e6',
+              }}
+              center
+              middle>
+              <MaterialCommunityIcons
+                name="cart-plus"
+                size={30}
+                color={'black'}
+              />
+            </Block>
+          </TouchableOpacity>
+        </Block>
         <View style={{width, height: 120}} />
       </ImageBackground>
     </SafeAreaView>
@@ -276,5 +311,20 @@ const style = StyleSheet.create({
     backgroundColor: '#F9813A',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+  cart: {
+    position: 'absolute',
+    bottom: 120,
+    right: 0,
   },
 });
